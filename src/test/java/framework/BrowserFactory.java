@@ -16,7 +16,7 @@ import java.util.Map;
 public class BrowserFactory {
 
     private static WebDriver driver;
-    private final static String BROWSER = PropertyReader.getProperty("Browser");
+    private final static String BROWSER = System.getProperty("browser");
     private final static String OPERATING_SYSTEM = "Windows";
     private final static String CHROME_PROPERTY = "webdriver.chrome.driver";
     private final static String FIREFOX_PROPERTY = "webdriver.gecko.driver";
