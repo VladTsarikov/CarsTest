@@ -5,12 +5,15 @@ import cars.pageObject.forms.AddSecondCarForm;
 import framework.BaseForm;
 import framework.elements.Label;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 
 public class StartComparePage extends BaseForm {
 
-    private static String enginePath = "//cars-compare-compare-info[contains(@header,'Engine')]//div[contains(@class,'info-column')]//span[@index = '%s']//p[1]";
-    private static String transmissionPath = "//cars-compare-compare-info[contains(@header,'Transmission')]//div[contains(@class,'info-column')]//span[@index = '%s']//p[1]";
+    private static String enginePath = "//cars-compare-compare-info[contains(@header,'Engine')]//div[contains(@class,'info-column')]//span[@index = '%s']//p";
+    private static String transmissionPath = "//cars-compare-compare-info[contains(@header,'Transmission')]//div[contains(@class,'info-column')]//span[@index = '%s']//p";
     private static String textName = "//cars-compare-compare-info[contains(@format,'research-car-mmyt')]//span[@index = '%s']";
     private Label lblName;
     private Label lblEngine;
@@ -47,8 +50,8 @@ public class StartComparePage extends BaseForm {
         initializeLabel(i);
         readCarInformation(compareCar);
         anotherCarName = lblName.getElement().getText();
-        anotherCarEngine = splitCatInformation(lblEngine);
-        anotherCarTransmission = splitCatInformation(lblTransmission);
+        anotherCarEngine = checkInf(lblEngine,compareCarEngine);
+        anotherCarTransmission = checkInf(lblTransmission,compareCarTransm);
         return compareCars();
 
     }
@@ -60,6 +63,7 @@ public class StartComparePage extends BaseForm {
     }
 
     private Boolean compareCars(){
+
         if(compareCarName.equals(anotherCarName) && compareCarEngine.equals(anotherCarEngine) && compareCarTransm.equals(anotherCarTransmission)){
             bool = Boolean.TRUE;
         }else{
@@ -74,15 +78,39 @@ public class StartComparePage extends BaseForm {
         compareCarTransm = compareCar.getTransmission();
     }
 
-    private String splitCatInformation(Label label){
+    private String splitCatInformation(String str){
 
         String someCar;
-        if(label.getElement().getText().endsWith(",")){
-            someCar = label.getElement().getText().substring(0,label.getElement().getText().length()-count);
+        if(str.endsWith(",")){
+            someCar = str.substring(0,str.length()-count);
         }else {
-            someCar = label.getElement().getText();
+            someCar = str;
         }
         return someCar;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public String checkInf(Label label,String comp){
+        List<WebElement> lab = label.getElements();
+        String a = null;
+        for(WebElement element: lab){
+            if(splitCatInformation(element.getText()).equals(comp)){
+                a = element.getText();
+            }
+        }
+        return a;
     }
 
 
